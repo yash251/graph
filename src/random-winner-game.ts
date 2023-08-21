@@ -1,15 +1,11 @@
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
-  GameEnded as GameEndedEvent,
-  GameStarted as GameStartedEvent,
-  OwnershipTransferred as OwnershipTransferredEvent,
-  PlayerJoined as PlayerJoinedEvent
-} from "../generated/RandomWinnerGame/RandomWinnerGame"
-import {
+  PlayerJoined,
   GameEnded,
   GameStarted,
   OwnershipTransferred,
-  PlayerJoined
-} from "../generated/schema"
+} from "../generated/RandomWinnerGame/RandomWinnerGame";
+import { Game } from "../generated/schema";
 
 export function handleGameEnded(event: GameEndedEvent): void {
   let entity = new GameEnded(
