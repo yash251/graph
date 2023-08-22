@@ -23,19 +23,21 @@ export function handleGameEnded(event: GameEnded): void {
   entity.save()
 }
 
-export function handleGameStarted(event: GameStartedEvent): void {
-  let entity = new GameStarted(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.gameId = event.params.gameId
-  entity.maxPlayers = event.params.maxPlayers
-  entity.entryFee = event.params.entryFee
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+export function handleGameStarted(event: GameStarted): void {
+  // Entities can be loaded from the store using a string ID; this ID
+  // needs to be unique across all entities of the same type
+  let entity = Game.load(event.params.gameId.toString());
+  // Entities only exist after they have been saved to the store;
+  // `null` checks allow to create entities on demand
+  if (!entity) {
+    entity = new Game(event.params.gameId.toString());
+    entity.players = [];
+  }
+  // Entity fields can be set based on event parameters
+  entity.maxPlayers = event.params.maxPlayers;
+  entity.entryFee = event.params.entryFee;
+  // Entities can be written to the store with `.save()`
+  entity.save();
 }
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
