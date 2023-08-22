@@ -38,21 +38,7 @@ export function handleGameStarted(event: GameStartedEvent): void {
   entity.save()
 }
 
-export function handleOwnershipTransferred(
-  event: OwnershipTransferredEvent
-): void {
-  let entity = new OwnershipTransferred(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.previousOwner = event.params.previousOwner
-  entity.newOwner = event.params.newOwner
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
+export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
 export function handlePlayerJoined(event: PlayerJoined): void {
   // Entities can be loaded from the store using a string ID; this ID
