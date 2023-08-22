@@ -54,16 +54,19 @@ export function handleOwnershipTransferred(
   entity.save()
 }
 
-export function handlePlayerJoined(event: PlayerJoinedEvent): void {
-  let entity = new PlayerJoined(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.gameId = event.params.gameId
-  entity.player = event.params.player
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
+export function handlePlayerJoined(event: PlayerJoined): void {
+  // Entities can be loaded from the store using a string ID; this ID
+  // needs to be unique across all entities of the same type
+  let entity = Game.load(event.params.gameId.toString());
+  // Entities only exist after they have been saved to the store;
+  // `null` checks allow to create entities on demand
+  if (!entity) {
+    return;
+  }
+  // Entity fields can be set based on event parameters
+  let newPlayers = entity.players;
+  newPlayers.push(event.params.player);
+  entity.players = newPlayers;
+  // Entities can be written to the store with `.save()`
   entity.save()
 }
