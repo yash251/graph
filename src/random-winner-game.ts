@@ -36,7 +36,7 @@ export function handleGameStarted(event: GameStarted): void {
   // Entity fields can be set based on event parameters
   entity.maxPlayers = event.params.maxPlayers;
   entity.entryFee = event.params.entryFee;
-  // Entities can be written to the store with `.save()`
+
   entity.save();
 }
 
@@ -55,6 +55,6 @@ export function handlePlayerJoined(event: PlayerJoined): void {
   let newPlayers = entity.players;
   newPlayers.push(event.params.player);
   entity.players = newPlayers;
-  // Entities can be written to the store with `.save()`
+
   entity.save()
 }
